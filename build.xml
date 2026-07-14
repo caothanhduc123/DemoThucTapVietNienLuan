@@ -68,4 +68,35 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <!-- SpotBugs -->
+    <property name="spotbugs.home" value="tools/spotbugs"/>
+
+    <taskdef name="spotbugs"
+             classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+        <classpath>
+            <fileset dir="${spotbugs.home}/lib">
+                <include name="*.jar"/>
+            </fileset>
+        </classpath>
+    </taskdef>
+
+    <target name="spotbugs" depends="compile">
+        <mkdir dir="reports"/>
+
+        <spotbugs home="${spotbugs.home}"
+                  output="xml"
+                  outputFile="reports/spotbugs.xml"
+                  effort="max"
+                  reportLevel="low">
+
+            <class location="${build.classes.dir}"/>
+
+            <sourcePath path="${src.dir}"/>
+
+            <auxClasspath>
+                <pathelement path="${javac.classpath}"/>
+            </auxClasspath>
+
+        </spotbugs>
+    </target>
 </project>
